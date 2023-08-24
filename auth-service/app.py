@@ -17,20 +17,25 @@ users_collection = db["users"]
 
 @app.route("/api/v1/users", methods=["POST"])
 def register():
-    new_user = request.get_json() # store the JSON body request
+    new_user = request.get_json()  # Store the JSON body request
     new_user["type"] = new_user["type"]
     new_user["email"] = new_user["email"].lower()
+
+    if "parentEmail" in new_user:
+        new_user["parentEmail"] = new_user["parentEmail"]
 
     if "dob" in new_user:
         new_user["dob"] = new_user["dob"]
 
-    new_user["password"] = hashlib.sha256(new_user["password"].encode("utf-8")).hexdigest() # encrypt password
-    doc = users_collection.find_one({"username": new_user["username"]}) # check if user exists
+    new_user["password"] = hashlib.sha256(new_user["password"].encode("utf-8")).hexdigest()  # Encrypt password
+    doc = users_collection.find_one({"username": new_user["username"]})  # Check if user exists
+    
     if not doc:
         users_collection.insert_one(new_user)
         return jsonify({'msg': 'User created successfully'}), 201
     else:
         return jsonify({'msg': 'Username already exists'}), 409
+
     
 
 @app.route("/api/v1/login", methods=["POST"])
