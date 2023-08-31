@@ -24,6 +24,7 @@ def register():
     new_user = request.get_json()  # Store the JSON body request
     new_user["type"] = new_user["type"]
     new_user["email"] = new_user["email"].lower()
+    new_user["level"] = 0
 
     if "parentEmail" in new_user:
         new_user["parentEmail"] = new_user["parentEmail"]
@@ -51,7 +52,8 @@ def login():
 		if encrpted_password == user_from_db['password']:
 			user_data = {
                 'username': user_from_db['username'],
-                'type': user_from_db['type']
+                'type': user_from_db['type'],
+                'level': user_from_db['level'],
             }
 			access_token = create_access_token(identity=user_data) # create jwt token
 			return jsonify(access_token=access_token,), 200
