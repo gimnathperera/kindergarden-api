@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"{{$randomUserName}}\",\n    \"password\": \"ssSS12!@\",\n    \"type\": \"CHILD\",\n    \"email\":\"{{$randomEmail}}\",\n    \"dob\":\"2003-05-23\"\n\n}",
+							"raw": "{\n    \"username\": \"{{$randomUserName}}\",\n    \"password\": \"ssSS12!@\",\n    \"type\": \"CHILD\",\n    \"email\":\"childx@kinder.com\",\n    \"dob\":\"2003-05-23\",\n    \"parentEmail\":\"parentx@kinder.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -70,6 +70,196 @@
 								"api",
 								"v1",
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Letter record",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Freda_Hackett\",\n    \"marks\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/api/v1/letter-records",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"letter-records"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Audio record",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Freda_Hackett\",\n    \"marks\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/api/v1/audio-records",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"audio-records"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Emotion record",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Freda_Hackett\",\n    \"emotion\": \"Sad\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/api/v1/emotion-records",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"emotion-records"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Game record",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Freda_Hackett\",\n    \"level\": 2,\n    \"duration\":\"02:30\",\n    \"stepCount\": 12\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/api/v1/game-records",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"game-records"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Children by parent",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/api/v1/children/parentx@kinder.com",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"children",
+								"parentx@kinder.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All records",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n     \"username\": \"Freda_Hackett\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/api/v1/get-records",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"get-records"
 							]
 						}
 					},
