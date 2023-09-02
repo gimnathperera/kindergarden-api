@@ -13,7 +13,7 @@ ALLOWED_EXTENSIONS = {'mp3'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['CONFIG_FOLDER'] = CONFIG_FOLDER
-labels = ['Amma', 'Pusa', 'Aliya']
+labels = ['Amma', 'Pusa', 'Aliya', 'Wathura', 'Mala']
 
 # Function to check if a file has an allowed extension
 def allowed_file(filename):
