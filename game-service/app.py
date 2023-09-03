@@ -6,6 +6,7 @@ from keras.models import load_model
 import numpy as np
 from pymongo import MongoClient
 from sklearn.preprocessing import StandardScaler
+import pandas as pd
 
 # Init app
 app = Flask(__name__)
@@ -18,7 +19,7 @@ client = MongoClient("mongodb+srv://root:UGUsVuDMPEzDLIQv@cluster0.gvvm6fh.mongo
 db = client["kindergarden"]
 game_collection = db["game"]
 users_collection = db["users"]
-
+data = pd.read_csv('game_dataset.csv')
 
 # get next level
 def getNextLevelPrediction(age, duration, stepCount):
@@ -26,6 +27,9 @@ def getNextLevelPrediction(age, duration, stepCount):
     # Input sample data for prediction
     sample_data = np.array([[age, stepCount, duration]]) 
 
+    X = data[['age', 'stepCount', 'duration']]
+    X_scaled = scaler.fit_transform(X)
+    
     # Standardize the sample data using the same scaler used for training
     sample_data_scaled = scaler.transform(sample_data)
 
