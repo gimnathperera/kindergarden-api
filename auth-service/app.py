@@ -54,6 +54,7 @@ def login():
                 'username': user_from_db['username'],
                 'type': user_from_db['type'],
                 'level': user_from_db['level'],
+                'email': user_from_db['email'],
             }
 			access_token = create_access_token(identity=user_data) # create jwt token
 			return jsonify(access_token=access_token,), 200
