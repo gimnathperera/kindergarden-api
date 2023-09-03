@@ -44,22 +44,27 @@ def register():
 
 @app.route("/api/v1/login", methods=["POST"])
 def login():
-	login_details = request.get_json() # store the json body request
-	user_from_db = users_collection.find_one({'username': login_details['username']})  # search for user in database
+    login_details = request.get_json()  # store the JSON body request
+    user_from_db = users_collection.find_one({'username': login_details['username']})  # search for the user in the database
 
-	if user_from_db:
-		encrpted_password = hashlib.sha256(login_details['password'].encode("utf-8")).hexdigest()
-		if encrpted_password == user_from_db['password']:
-			user_data = {
+    if user_from_db:
+        encrypted_password = hashlib.sha256(login_details['password'].encode("utf-8")).hexdigest()
+        if encrypted_password == user_from_db['password']:
+            user_data = {
                 'username': user_from_db['username'],
                 'type': user_from_db['type'],
-                'level': user_from_db['level'],
                 'email': user_from_db['email'],
             }
-			access_token = create_access_token(identity=user_data) # create jwt token
-			return jsonify(access_token=access_token,), 200
 
-	return jsonify({'msg': 'The username or password is incorrect'}), 401
+            # Check if 'level' exists in user_from_db before including it in user_data
+            if 'level' in user_from_db:
+                user_data['level'] = user_from_db['level']
+
+            access_token = create_access_token(identity=user_data)  # create JWT token
+            return jsonify(access_token=access_token), 200
+
+    return jsonify({'msg': 'The username or password is incorrect'}), 401
+
 
 
 @app.route("/api/v1/user", methods=["GET"])
