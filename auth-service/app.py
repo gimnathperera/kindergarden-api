@@ -4,9 +4,16 @@ from flask import Flask, request, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from pymongo import MongoClient
 from bson import ObjectId 
+import os
+import requests
+import json
+import numpy as np
+
 
 app = Flask(__name__)
+APP_ROOT = os.path.abspath(os.path.dirname(__file__))
 jwt = JWTManager(app)
+
 app.config['JWT_SECRET_KEY'] = 'UGUsVuDMPEzDLIQv'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
 
@@ -17,6 +24,7 @@ letter_collection = db["letters"]
 audio_collection = db["audio"]
 emotion_collection = db["emotion"]
 game_collection = db["game"]
+
 
 
 @app.route("/api/v1/users", methods=["POST"])
@@ -189,7 +197,44 @@ def get_children(parent_username):
     return jsonify(child_users), 200
 
 
+# image object detection
+@app.route('/api/v1/validate', methods=['POST'])
+def get_emotion_prediction():
+    target = os.path.join(APP_ROOT, 'images/')
 
+    if not os.path.isdir(target):
+        os.mkdir(target)
+
+    file = request.files.get('file')
+    filename = file.filename
+    destination = '/'.join([target, filename])
+
+    file.save(destination)
+
+    headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNGE1MmRiNjQtMTRkYy00ZmU0LWJiMTYtYmMwZjFjMjYzNGUxIiwidHlwZSI6ImFwaV90b2tlbiJ9.85kbgG1wzRT5_-O7pjGg9dHW0Pqd9GtN12hb1L70T44"}
+
+    url = "https://api.edenai.run/v2/image/object_detection"
+    data = {"show_original_response": False, "fallback_providers": "", "providers": "google,amazon"}
+    files = {'file': open(destination, 'rb')}
+
+    response = requests.post(url, data=data, files=files, headers=headers)
+    result = json.loads(response.text)
+    detected_classes = result['google']['items']
+
+    confidence_values = np.array([item['confidence'] for item in detected_classes])
+    highest_confidence_index = np.argmax(confidence_values)
+    highest_confidence_item = detected_classes[highest_confidence_index]
+
+    highest_confidence_label = highest_confidence_item['label']
+    highest_confidence = highest_confidence_item['confidence']
+
+    data = {
+        'label': highest_confidence_label,
+        'confidence': highest_confidence,
+    }
+
+
+    return jsonify(data)
 
 
 if __name__ == '__main__':
