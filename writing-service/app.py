@@ -1,12 +1,12 @@
 from tensorflow import keras
 from flask import Flask, request, jsonify
 import os
-import json
 from flask_cors import CORS
 
 from keras.models import load_model 
-from PIL import Image, ImageOps  
 import numpy as np
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.applications.vgg16 import preprocess_input
 
 
 # Disable scientific notation for clarity
@@ -20,29 +20,22 @@ letter_class_names = open("labels.txt", "r").readlines()
 
 APP_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-def predict_image(image_path):
 
-    # Create the array of the right shape to feed into the keras model
-    # The 'length' or number of images you can put into the array is
-    # determined by the first position in the shape tuple, in this case 1
-    data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
+def detect_image(file_path):
+    img = image.load_img(file_path, target_size=(224, 224))
+    img = image.img_to_array(img)
+    img = np.expand_dims(img, axis=0)
+    img = preprocess_input(img)  # Preprocess the image to match VGG16's requirements
+    prediction = letter_model.predict(img)
 
-    # Load and preprocess the image
-    image = Image.open(image_path).convert("RGB")
-    size = (224, 224)
-    image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
-    image_array = np.asarray(image)
-    normalized_image_array = (image_array.astype(np.float32) / 127.5) - 1
-    data[0] = normalized_image_array
-
-    # Predicts the model
-    prediction = letter_model.predict(data)
     index = np.argmax(prediction)
     class_name = letter_class_names[index].strip()
     confidence_score = prediction[0][index]
 
-    # Return the predicted class name and confidence score
+
     return class_name, confidence_score
+
+
 
 # Init app
 app = Flask(__name__)
@@ -63,7 +56,7 @@ def get_disease_prediction():
     destination = '/'.join([target, filename])
 
     file.save(destination)
-    class_name, confidence_score = predict_image(f"./images/{filename}")
+    class_name, confidence_score = detect_image(f"./images/{filename}")
 
     data = {'className':class_name, 
     'confidenceScore':str(confidence_score)
