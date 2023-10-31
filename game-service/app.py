@@ -51,51 +51,52 @@ def getNextLevelPrediction(age, duration, stepCount):
 
 def determine_next_level(age, step_count, duration):
     if age < 3:
-        if step_count > 25 and duration >= 35:
+        if step_count > 25 or duration >= 35:
             return 1
-        elif step_count == 24 and 29 < duration < 35:
+        elif step_count == 24 or 29 < duration < 35:
             return 2
-        elif 20 <= step_count <= 22 and 23 <= duration <= 27:
+        elif 20 <= step_count <= 22 or 23 <= duration <= 27:
             return 4
-        elif step_count <= 18 and duration <= 23:
+        elif step_count <= 18 or duration <= 23:
             return 5
-        elif 22 <= step_count <= 25 and 26 <= duration:
+        elif 22 <= step_count <= 25 or 26 <= duration:
             return 3
     elif 3 <= age < 5:
-        if step_count <= 16 and duration <= 18:
+       
+        if step_count <= 16 or duration <= 18:
             return 5
-        elif step_count == 18 and 18 < duration < 21:
+        elif step_count == 18 or 18 < duration < 21:
             return 4
-        elif 20 <= step_count <= 22 and 20 < duration < 23:
+        elif 20 <= step_count <= 22 or 20 < duration < 23:
             return 3
-        elif step_count == 22 and 22 < duration < 25:
+        elif step_count == 22 or 22 < duration < 25:
             return 2
-        elif step_count > 25 and duration >= 25:
+        elif step_count > 25 or duration >= 25:
             return 1
     elif 5 <= age < 7:
-        if step_count <= 14 and duration <= 15:
+        if step_count <= 14 or duration <= 15:
             return 5
-        elif step_count == 16 and 15 < duration < 18:
+        elif step_count == 16 or 15 < duration < 18:
             return 4
-        elif step_count == 18 and 17 < duration < 20:
+        elif step_count == 18 or 17 < duration < 20:
             return 3
-        elif 20 <= step_count <= 22 and 19 < duration < 22:
+        elif 20 <= step_count <= 22 or 19 < duration < 22:
             return 2
-        elif step_count > 21 and duration >= 22:
+        elif step_count > 21 or duration >= 22:
             return 1
     else:
-        if step_count <= 12 and duration <= 12:
+        if step_count <= 12 or duration <= 12:
             return 5
-        elif step_count == 14 and 12 < duration < 15:
+        elif step_count == 14 or 12 < duration < 15:
             return 4
-        elif 16 <= step_count <= 18 and 14 < duration < 17:
+        elif 16 <= step_count <= 18 or 14 < duration < 17:
             return 3
-        elif step_count == 18 and 16 < duration < 19:
+        elif step_count == 18 or 16 < duration < 19:
             return 2
-        elif step_count > 19 and duration >= 19:
+        elif step_count > 19 or duration >= 19:
             return 1
 
-    return 2  
+    return 2
 
 
 
